@@ -1,6 +1,7 @@
 #include <iostream>
 #include "doctest.h"
 #include "coord.hpp"
+#include "ensemble.hpp"
 using namespace std;
 
 
@@ -89,9 +90,58 @@ TEST_CASE("toInt") {
 	CHECK(t3.toInt() == 78);
 }
 
+Ensemble Coord::voisines(Coord c) const {
+	int x = c.getX();
+	int y = c.getY();
+	
+	int imin = max(x - 1, 0);
+	int imax = min(x + 1, TAILLEGRILLE - 1);
+	int jmin = max(y - 1, 0);
+	int jmax = min(y + 1, TAILLEGRILLE - 1);
+	
+	Ensemble ev = Ensemble{};
+	for (int i = imin; i <= imax; i++) {
+		for (int j = jmin; j <= jmax; j++) {
+			Coord temp = Coord{i,j};
+			if (temp != c) {
+				ev.ajoute(temp.toInt());
+			}
+		}
+	}
+	return ev;
+}
 
+TEST_CASE("voisines case au centre") {
+    Coord c{2, 2};
+    Ensemble v = c.voisines(c);
+    CHECK(v.cardinal() == 8);
+    CHECK(v.contient(Coord(1,1).toInt()));
+    CHECK(v.contient(Coord(1,2).toInt()));
+    CHECK(v.contient(Coord(1,3).toInt()));
+    CHECK(v.contient(Coord(2,1).toInt()));
+    CHECK(v.contient(Coord(2,3).toInt()));
+    CHECK(v.contient(Coord(3,1).toInt()));
+    CHECK(v.contient(Coord(3,2).toInt()));
+    CHECK(v.contient(Coord(3,3).toInt()));
+}
 
+TEST_CASE("voisines en haut à gauche") {
+    Coord c{0, 0};
+    Ensemble v = c.voisines(c);
+    CHECK(v.cardinal() == 3);
+    CHECK(v.contient(Coord(0,1).toInt()));
+    CHECK(v.contient(Coord(1,0).toInt()));
+    CHECK(v.contient(Coord(1,1).toInt()));
+}
 
+TEST_CASE("voisines en bas à droite") {
+    Coord c{TAILLEGRILLE - 1, TAILLEGRILLE - 1};
+    Ensemble v = c.voisines(c);
+    CHECK(v.cardinal() == 3);
+    CHECK(v.contient(Coord(TAILLEGRILLE - 2, TAILLEGRILLE - 2).toInt()));
+    CHECK(v.contient(Coord(TAILLEGRILLE - 2, TAILLEGRILLE - 1).toInt()));
+    CHECK(v.contient(Coord(TAILLEGRILLE - 1, TAILLEGRILLE - 2).toInt()));
+}
 
 
 

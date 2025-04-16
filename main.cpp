@@ -11,4 +11,7 @@ int main() {
 	Coord t = Coord{15,10};
 	cout << t.getX() << endl;
 	cout << t << endl;
+	cout << "--------" << endl;
+	Ensemble e = Ensemble{};
+	cout << e << endl;
 }
