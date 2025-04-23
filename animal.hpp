@@ -1,16 +1,17 @@
 #ifndef ANIMAL_HPP
 #define ANIMAL_HPP
 
-
+#include "coord.hpp"
+#include "ensemble.hpp"
 using namespace std;
 
-const int FoodReprod; 
-const int FoodLapin;
-const int foodInit;
-const int MaxFood;
-const int ProBirthRenard;
-const int ProBirthLapin;
-const int MinFreeBirthLapin;
+const int FoodReprod = 8; 
+const int FoodLapin = 5;
+const int FoodInit = 5;
+const int MaxFood = 10;
+const int ProBirthRenard = 0.05;
+const int ProBirthLapin = 0.30;
+const int MinFreeBirthLapin = 4;
 
 
 

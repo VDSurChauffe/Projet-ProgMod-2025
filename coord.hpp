@@ -16,7 +16,7 @@ struct Coord {
 		int getX() const;
 		int getY() const;
 		int toInt() const;
-		Ensemble voisines(Coord c) const;
+		Ensemble voisines() const;
 };
 
 bool operator==(Coord c1, Coord c2);

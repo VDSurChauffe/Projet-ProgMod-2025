@@ -1,13 +1,12 @@
 #include <iostream>
+#include <sstream>
 #include "doctest.h"
 #include "coord.hpp"
 #include "ensemble.hpp"
 #include "animal.hpp"
 using namespace std;
 
-
-
-Anmial::Anmial() : 
+Animal::Animal(int id, Espece espece, Coord c) : id {id}, coord{c}, espece{espece}, food{FoodInit} {}
 
 int Animal::getId() const {
 	return id;
@@ -24,17 +23,41 @@ Coord Animal::getCoord() const {
 	return coord;
 }
 
-void Animal::setCoord(Coord c) {
-	coord = c;
-}
 
 Espece Animal::getEspece() const {
 	return espece;
 }
 
+TEST_CASE("Animal constructeur and getters") {
+    Coord c(5, 10);
+    Animal a(42, Espece::lapin, c);
+
+    CHECK(a.getId() == 42);
+    CHECK(a.getEspece() == Espece::lapin);
+    CHECK(a.getCoord().getX() == 5);
+    CHECK(a.getCoord().getY() == 10);
+}
+
+void Animal::setCoord(Coord c) {
+	coord = c;
+}
+
+TEST_CASE("Animal setCoord") {
+    Animal a(1, Espece::renard, Coord(0, 0));
+    a.setCoord(Coord(3, 4));
+    CHECK(a.getCoord() == Coord(3, 4));
+}
+
 bool Animal::meurt() const {
 	return food == 0;
 }
+
+TEST_CASE("Animal meurt") {
+    Animal a(2, Espece::lapin, Coord(0, 0));
+    for (int i = 0; i < FoodInit; ++i) a.jeune();
+    CHECK(a.meurt() == true);
+}
+
 
 void Animal::mange() {
 	food += FoodLapin - 1;
@@ -43,15 +66,31 @@ void Animal::mange() {
 	}
 }
 
+TEST_CASE("Animal mange") {
+    Animal a(3, Espece::lapin, Coord(0, 0));
+    a.mange(); 
+    CHECK_FALSE(a.meurt());
+}
+
 void Animal::jeune() {
 	food--;
+}
+
+TEST_CASE("Animal jeune diminue food") {
+    Animal a(4, Espece::lapin, Coord(0, 0));
+    a.jeune();  // -1
+    CHECK(a.meurt() == false);
 }
 
 void Animal::affiche(ostream& out) const {
 	out << "Animal : " << id << endl;
 	out << "Coord : " << coord << endl;
-	out << "Espèce : " << espece << endl;
-	out << "Nourriture : " << nourriture << endl;
+	out << "Espèce : ";
+	switch (getEspece()) {
+		case Espece::lapin : out << "lapin" << endl; break;
+		case Espece::renard : out << "renard" << endl; break;
+	}
+	out << "Nourriture : " << food << endl;
 }
 
 ostream& operator<<(ostream &out, const Animal a) {
@@ -59,17 +98,43 @@ ostream& operator<<(ostream &out, const Animal a) {
 	return out;
 }
 
+TEST_CASE("Animal affiche and operator<<") {
+    Animal a(5, Espece::renard, Coord(1, 1));
+    stringstream ss;
+    ss << a;
+    string result = ss.str();
+    CHECK(result.find("Animal : 5") != string::npos);
+    CHECK(result.find("renard") != string::npos);
+}
+
 
 bool Animal::seReproduit() const {
 	if (espece == Espece::renard) {
-		if (food > foodRepro) {
+		if (food > FoodReprod) {
 			double r = rand() % 100;
 			r = r/100;
-			if (r < ProbBirthRenard) {
+			if (r < ProBirthRenard) {
 				return true;
 			}
 		}
 	}
 	if (espece == Espece::lapin) {
-		// to do
+		Coord c = getCoord();
+		Ensemble ev = c.voisines();
+		if (ev.getCard() <= MinFreeBirthLapin) {
+			double r = rand() % 100;
+			r = r/100;
+			if (r < ProBirthLapin) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
+
+TEST_CASE("Animal seReproduit") {
+    Animal a(6, Espece::renard, Coord(0, 0));
+    CHECK(a.seReproduit() == false);
+}
+
+

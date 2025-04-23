@@ -90,9 +90,9 @@ TEST_CASE("toInt") {
 	CHECK(t3.toInt() == 78);
 }
 
-Ensemble Coord::voisines(Coord c) const {
-	int x = c.getX();
-	int y = c.getY();
+Ensemble Coord::voisines() const {
+	int x = getX();
+	int y = getY();
 	
 	int imin = max(x - 1, 0);
 	int imax = min(x + 1, TAILLEGRILLE - 1);
@@ -103,7 +103,7 @@ Ensemble Coord::voisines(Coord c) const {
 	for (int i = imin; i <= imax; i++) {
 		for (int j = jmin; j <= jmax; j++) {
 			Coord temp = Coord{i,j};
-			if (temp != c) {
+			if (temp != Coord{x, y}) {
 				ev.ajoute(temp.toInt());
 			}
 		}
@@ -113,7 +113,7 @@ Ensemble Coord::voisines(Coord c) const {
 
 TEST_CASE("voisines case au centre") {
     Coord c{2, 2};
-    Ensemble v = c.voisines(c);
+    Ensemble v = c.voisines();
     CHECK(v.cardinal() == 8);
     CHECK(v.contient(Coord(1,1).toInt()));
     CHECK(v.contient(Coord(1,2).toInt()));
@@ -127,7 +127,7 @@ TEST_CASE("voisines case au centre") {
 
 TEST_CASE("voisines en haut à gauche") {
     Coord c{0, 0};
-    Ensemble v = c.voisines(c);
+    Ensemble v = c.voisines();
     CHECK(v.cardinal() == 3);
     CHECK(v.contient(Coord(0,1).toInt()));
     CHECK(v.contient(Coord(1,0).toInt()));
@@ -136,7 +136,7 @@ TEST_CASE("voisines en haut à gauche") {
 
 TEST_CASE("voisines en bas à droite") {
     Coord c{TAILLEGRILLE - 1, TAILLEGRILLE - 1};
-    Ensemble v = c.voisines(c);
+    Ensemble v = c.voisines();
     CHECK(v.cardinal() == 3);
     CHECK(v.contient(Coord(TAILLEGRILLE - 2, TAILLEGRILLE - 2).toInt()));
     CHECK(v.contient(Coord(TAILLEGRILLE - 2, TAILLEGRILLE - 1).toInt()));

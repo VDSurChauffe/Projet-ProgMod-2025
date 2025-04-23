@@ -14,7 +14,6 @@ Grille::Grille() : g{} {
 }
 
 
-
 bool Grille::caseVide(Coord c) const {
 	return g[c.getX()][c.getY()] == -1;
 }
