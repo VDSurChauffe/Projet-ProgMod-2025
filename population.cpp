@@ -25,12 +25,14 @@ int Population::reserve() {
 }
 
 
-void Population::set(Animal a) {
+int Population::set(Espece e, Coord c) {
 	int id = reserve();
+	Animal a{id, e, c};
 	if (id >= p.size()) {
 		p.push_back(a);
 	}
     p[id] = a;
+	return id;
 }
 
 
@@ -44,22 +46,21 @@ Animal Population::get(int id) const {
 
 TEST_CASE("Population::set, reserve et get") {
     Population pop;
-    int id = pop.reserve();
-    Animal a(id, Espece::lapin, Coord(1, 2));
-    pop.set(a);
-    Animal recupere = pop.get(id);
-    CHECK(recupere.getId() == id);
+    pop.set(Espece::lapin, Coord(1, 2));
+    Animal recupere = pop.get(0);
+    CHECK(recupere.getId() == 0);
     CHECK(recupere.getEspece() == Espece::lapin);
     CHECK(recupere.getCoord().getX() == 1);
     CHECK(recupere.getCoord().getY() == 2);
 }
 
+
 TEST_CASE("Population::getIds après ajout et suppression") {
     Population pop;
-    for (int i = 0; i < 3; ++i) {
-        Animal a(i, Espece::lapin, Coord(i, i + 1));
-        pop.set(a);
-    }
+    pop.set(Espece::lapin, Coord(0, 1));
+    pop.set(Espece::lapin, Coord(1, 2));
+    pop.set(Espece::lapin, Coord(2, 3));
+
     pop.supprime(1);
 
     vector<int> ids = pop.getIds();
@@ -75,7 +76,7 @@ vector<int> Population::getIds() const {
     }
 
     vector<int> ids;
-    for (int i = 0; i < static_cast<int>(p.size()); ++i) {
+    for (int i = 0; i < p.size(); i++) {
         if (!estLibre[i]) {
             ids.push_back(i);
         }
@@ -84,10 +85,18 @@ vector<int> Population::getIds() const {
     return ids;
 }
 
-TEST_CASE("Population::getIds sur une population vide") {
+TEST_CASE("Population::getIds après ajout et suppression") {
     Population pop;
+    pop.set(Espece::lapin, Coord(0, 1));
+    pop.set(Espece::lapin, Coord(1, 2));
+    pop.set(Espece::lapin, Coord(2, 3));
+
+    pop.supprime(1);
+
     vector<int> ids = pop.getIds();
-    CHECK(ids.empty());
+    CHECK(ids.size() == 2);
+    CHECK(ids[0] == 0);
+    CHECK(ids[1] == 2);
 }
 
 void Population::supprime(int id) {
@@ -96,18 +105,18 @@ void Population::supprime(int id) {
 
 TEST_CASE("Population::reserve réutilise un id libre") {
     Population pop;
-
-    Animal a1(0, Espece::renard, Coord(0, 0));
-    Animal a2(1, Espece::lapin, Coord(1, 1));
-    pop.set(a1);
-    pop.set(a2);
+    pop.set(Espece::renard, Coord(0, 0));
+    pop.set(Espece::lapin, Coord(1, 1));
 
     pop.supprime(0);
     int id = pop.reserve();
 
-    CHECK(id == 0);  // Doit réutiliser l'id supprimé
+    CHECK(id == 0);  // doit réutiliser l'id 0
 }
 
+Animal& Population::getRef(int id) {
+    return p.at(id);
+}
 
 
 

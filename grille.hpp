@@ -1,9 +1,9 @@
 #ifndef GRILLE_HPP
 #define GRILLE_HPP
+#include<array>
 
-
+#include "coord.hpp"
 using namespace std;
-
 
 struct Grille {
 	private:

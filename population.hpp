@@ -3,6 +3,7 @@
 
 #include<vector>
 #include "animal.hpp"
+#include "coord.hpp"
 using namespace std;
 
 
@@ -15,8 +16,9 @@ struct Population {
 		Animal get(int id) const;
 		vector<int> getIds() const;
 		int reserve();
-		void set(Animal a);
+		int set(Espece espece, Coord c);
 		void supprime(int id);
+		Animal& getRef(int id);
 		
 };
 

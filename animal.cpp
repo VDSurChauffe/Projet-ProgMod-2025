@@ -23,7 +23,6 @@ Coord Animal::getCoord() const {
 	return coord;
 }
 
-
 Espece Animal::getEspece() const {
 	return espece;
 }
@@ -58,7 +57,6 @@ TEST_CASE("Animal meurt") {
     CHECK(a.meurt() == true);
 }
 
-
 void Animal::mange() {
 	food += FoodLapin - 1;
 	if (food > MaxFood) {
@@ -78,7 +76,7 @@ void Animal::jeune() {
 
 TEST_CASE("Animal jeune diminue food") {
     Animal a(4, Espece::lapin, Coord(0, 0));
-    a.jeune();  // -1
+    a.jeune();
     CHECK(a.meurt() == false);
 }
 

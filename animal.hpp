@@ -9,8 +9,8 @@ const int FoodReprod = 8;
 const int FoodLapin = 5;
 const int FoodInit = 5;
 const int MaxFood = 10;
-const int ProBirthRenard = 0.05;
-const int ProBirthLapin = 0.30;
+const double ProBirthRenard = 0.05;
+const double ProBirthLapin = 0.30;
 const int MinFreeBirthLapin = 4;
 
 
@@ -26,7 +26,6 @@ struct Animal {
 		int food;
 		
 	public:
-		Animal();
 		Animal(int id, Espece espece, Coord c);
 		int getId() const;
 		Coord getCoord() const;
