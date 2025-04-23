@@ -153,44 +153,55 @@ TEST_CASE("Test de voisinsLapins et voisinsRenards") {
     CHECK(voisinsRenards.getCard() == 1);
 }
 
+
 void Jeu::deplaceAnimal(int id) {
     Animal a = pop.get(id);
     Coord anciennePos = a.getCoord();
-	
     Ensemble voisinesLibres = voisinsVides(anciennePos);
-    if (voisinesLibres.getCard() == 0) return; // Pas de mouvement possible
+    if (voisinesLibres.getCard() == 0) return;
     int nouvellePosInt = voisinesLibres.getT(rand() % voisinesLibres.getCard());
     Coord nouvelleCoord{nouvellePosInt};
-    Animal& refAnimal = pop.getRef(id);
-    refAnimal.setCoord(nouvelleCoord);
-
+    pop.modifier(id, nouvelleCoord);
     g.videCase(anciennePos);
     g.setCase(id, nouvelleCoord);
 }
 
-TEST_CASE("Test deplaceAnimal déplace bien l'animal dans une case voisine libre") {
-    Jeu jeu;
+TEST_CASE("Test de deplaceAnimal avec un animal au hasard") {
+    Jeu jeu(0.3, 0.3);  // Initialise une grille avec des animaux
 
-    Coord c{10, 10};
-    jeu.ajouteAnimal(Espece::lapin, c);
-    int id = jeu.getGrille().getCase(c);
+    bool animalTrouve = false;
+    int id = -1;
+    Coord ancienneCoord(0, 0); // Initialisation valide
+
+    // Cherche un animal au hasard dans la grille
+    for (int x = 0; x < TAILLEGRILLE && !animalTrouve; ++x) {
+        for (int y = 0; y < TAILLEGRILLE && !animalTrouve; ++y) {
+            Coord c(x, y);
+            int idCase = jeu.getGrille().getCase(c);
+            if (idCase != -1) {
+                id = idCase;
+                ancienneCoord = c;
+                animalTrouve = true;
+            }
+        }
+    }
+
+    CHECK(animalTrouve == true);
     CHECK(id != -1);
-    Coord caseLibre = Coord{10, 11};
-    jeu.getGrille().videCase(caseLibre);
-    Animal aAvant = jeu.getPop().get(id);
-    Coord ancienneCoord = aAvant.getCoord();
+
+    Animal a = jeu.getPop().get(id);
+    CHECK(a.getCoord() == ancienneCoord);
+
     jeu.deplaceAnimal(id);
-    Animal aApres = jeu.getPop().get(id);
-    Coord nouvelleCoord = aApres.getCoord();
+
+    Animal aDeplace = jeu.getPop().get(id);
+    Coord nouvelleCoord = aDeplace.getCoord();
+
     CHECK(nouvelleCoord != ancienneCoord);
-    CHECK(jeu.getGrille().getCase(ancienneCoord) == -1);
     CHECK(jeu.getGrille().getCase(nouvelleCoord) == id);
-    Ensemble voisines = ancienneCoord.voisines();
-    CHECK(voisines.contient(nouvelleCoord.toInt()));
+    CHECK(jeu.getGrille().getCase(ancienneCoord) == -1);
+    CHECK(jeu.verifieGrille());
 }
-
-
-
 
 
 

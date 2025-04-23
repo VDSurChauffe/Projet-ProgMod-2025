@@ -18,7 +18,7 @@ struct Population {
 		int reserve();
 		int set(Espece espece, Coord c);
 		void supprime(int id);
-		Animal& getRef(int id);
+		void modifier(int id, Coord c);
 		
 };
 

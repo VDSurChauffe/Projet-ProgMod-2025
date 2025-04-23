@@ -114,9 +114,11 @@ TEST_CASE("Population::reserve réutilise un id libre") {
     CHECK(id == 0);  // doit réutiliser l'id 0
 }
 
-Animal& Population::getRef(int id) {
-    return p.at(id);
+void Population::modifier(int id, Coord c) {
+    if (id >= 0 && id < p.size()) {
+        p[id].setCoord(c); 
+    } else {
+        throw out_of_range("Identifiant invalide pour modification");
+    }
 }
-
-
 
