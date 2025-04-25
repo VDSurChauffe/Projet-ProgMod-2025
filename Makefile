@@ -4,8 +4,8 @@ test: coord.o test.o ensemble.o grille.o animal.o population.o jeu.o
 test.o: test.cpp doctest.h
 	g++ -c test.cpp
 
-main: main.o coord.o
-	g++ -o main main.o coord.o
+main: main.o coord.o ensemble.o grille.o animal.o population.o jeu.o
+	g++ -o main main.o coord.o ensemble.o grille.o animal.o population.o jeu.o
 
 grille.o: grille.cpp grille.hpp coord.hpp doctest.h
 	g++ -c grille.cpp

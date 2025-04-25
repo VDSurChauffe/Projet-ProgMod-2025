@@ -2,6 +2,8 @@
 #include <iostream>
 #include "doctest.h"
 #include "coord.hpp"
+#include "ensemble.hpp"
+
 
 using namespace std;
 
