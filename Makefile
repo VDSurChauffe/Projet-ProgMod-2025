@@ -1,35 +1,41 @@
+EXEC_FILES=test main
+COMPIL=g++ -c -Wall
+
+main: main.o coord.o ensemble.o grille.o animal.o population.o jeu.o image.o
+	g++ -o main main.o coord.o ensemble.o grille.o animal.o population.o jeu.o image.o
+
 test: coord.o test.o ensemble.o grille.o animal.o population.o jeu.o
 	g++ -o test coord.o test.o ensemble.o grille.o animal.o population.o jeu.o
 
 test.o: test.cpp doctest.h
-	g++ -c test.cpp
+	$(COMPIL) test.cpp
 
-main: main.o coord.o ensemble.o grille.o animal.o population.o jeu.o
-	g++ -o main main.o coord.o ensemble.o grille.o animal.o population.o jeu.o
+image.o: image.cpp image.hpp jeu.hpp grille.hpp animal.hpp population.hpp ensemble.hpp
+	$(COMPIL) image.cpp
 
 grille.o: grille.cpp grille.hpp coord.hpp doctest.h
-	g++ -c grille.cpp
-
-
+	$(COMPIL) grille.cpp
 
 animal.o: animal.cpp animal.hpp coord.hpp doctest.h ensemble.hpp
-	g++ -c animal.cpp
+	$(COMPIL) animal.cpp
 
 population.o: population.cpp population.hpp animal.hpp doctest.h
-	g++ -c population.cpp
+	$(COMPIL) population.cpp
 
 coord.o: coord.cpp coord.hpp doctest.h
-	g++ -c coord.cpp
+	$(COMPIL) coord.cpp
 
 ensemble.o: ensemble.cpp ensemble.hpp doctest.h
-	g++ -c ensemble.cpp
+	$(COMPIL) ensemble.cpp
 
 main.o: main.cpp doctest.h coord.hpp ensemble.hpp grille.hpp
-	g++ -c main.cpp 
-
+	$(COMPIL) main.cpp 
 
 jeu.o: jeu.cpp jeu.hpp grille.hpp animal.hpp population.hpp ensemble.hpp
-	g++ -c jeu.cpp
+	$(COMPIL) jeu.cpp
+
+anim: animation/img000.ppm
+	convert -scale 600 -delay 20 animation/img*.ppm movie.gif
 
 clean:
-	rm -f *.o $(EXEC_FILES)
+	rm -f *.o $(EXEC_FILES) animation/*
