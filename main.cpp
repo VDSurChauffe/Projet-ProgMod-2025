@@ -21,7 +21,7 @@ const double ProbRenardDefaut = 0.07;
 int main() {
 	Jeu monde{ProbLapinDefaut, ProbRenardDefaut};
 	for (int i = 0; i < 100; i++) {
-		// TODO: simulation
+		monde.simulerIteration();
 		cree_image(monde, i);
 	}
 	return 0;

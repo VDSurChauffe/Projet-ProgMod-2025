@@ -158,10 +158,16 @@ void Jeu::deplaceAnimal(int id) {
     Animal a = pop.get(id);
     Coord anciennePos = a.getCoord();
     Ensemble voisinesLibres = voisinsVides(anciennePos);
-    if (voisinesLibres.getCard() == 0) return;
-    int nouvellePosInt = voisinesLibres.getT(rand() % voisinesLibres.getCard());
+    int casesPossibles = voisinesLibres.getCard();
+    if (a.getEspece() == Espece::renard) {casesPossibles += voisinsLapins(anciennePos).getCard();}
+    if (casesPossibles == 0) return;
+    int nouvellePosInt;
+    int lapins = casesPossibles - voisinesLibres.getCard();
+    if (lapins > 0) {nouvellePosInt = voisinsLapins(anciennePos).getT(rand() % lapins);}
+    else {nouvellePosInt = voisinesLibres.getT(rand() % voisinesLibres.getCard());}
     Coord nouvelleCoord{nouvellePosInt};
     pop.modifier(id, nouvelleCoord);
+    if (lapins > 0) {pop.supprime(g.getCase(nouvelleCoord));}
     g.videCase(anciennePos);
     g.setCase(id, nouvelleCoord);
 }
@@ -203,10 +209,13 @@ TEST_CASE("Test de deplaceAnimal avec un animal au hasard") {
     CHECK(jeu.verifieGrille());
 }
 
-
-
-
-
-
-
-
+void Jeu::simulerIteration() {
+    for (int id: pop.getIds()) {
+        if (pop.get(id).getEspece() == Espece::lapin) {deplaceAnimal(id);}
+    }
+    for (int id: pop.getIds()) {
+        if (pop.get(id).getEspece() == Espece::renard) {
+            deplaceAnimal(id);
+        }
+    }
+}
