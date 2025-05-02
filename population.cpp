@@ -122,3 +122,10 @@ void Population::modifier(int id, Coord c) {
     }
 }
 
+void Population::animalMange(int id) {
+    p[id].mange();
+}
+
+void Population::animalJeune(int id) {
+    p[id].jeune();
+}

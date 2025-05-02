@@ -32,8 +32,8 @@ struct Animal {
 		void setCoord(Coord c);
 		Espece getEspece() const;
 		void affiche(ostream& out) const;
+		int getFood() const;
 		bool meurt() const;
-		bool seReproduit() const;
 		void mange();
 		void jeune();
 };

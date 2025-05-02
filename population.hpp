@@ -15,6 +15,8 @@ struct Population {
 		Population();
 		Animal get(int id) const;
 		vector<int> getIds() const;
+		void animalMange(int id);
+		void animalJeune(int id);
 		int reserve();
 		int set(Espece espece, Coord c);
 		void supprime(int id);

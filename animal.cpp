@@ -27,6 +27,10 @@ Espece Animal::getEspece() const {
 	return espece;
 }
 
+int Animal::getFood() const {
+	return food;
+}
+
 TEST_CASE("Animal constructeur and getters") {
     Coord c(5, 10);
     Animal a(42, Espece::lapin, c);
@@ -104,35 +108,3 @@ TEST_CASE("Animal affiche and operator<<") {
     CHECK(result.find("Animal : 5") != string::npos);
     CHECK(result.find("renard") != string::npos);
 }
-
-
-bool Animal::seReproduit() const {
-	if (espece == Espece::renard) {
-		if (food > FoodReprod) {
-			double r = rand() % 100;
-			r = r/100;
-			if (r < ProBirthRenard) {
-				return true;
-			}
-		}
-	}
-	if (espece == Espece::lapin) {
-		Coord c = getCoord();
-		Ensemble ev = c.voisines();
-		if (ev.getCard() <= MinFreeBirthLapin) {
-			double r = rand() % 100;
-			r = r/100;
-			if (r < ProBirthLapin) {
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-TEST_CASE("Animal seReproduit") {
-    Animal a(6, Espece::renard, Coord(0, 0));
-    CHECK(a.seReproduit() == false);
-}
-
-

@@ -163,11 +163,19 @@ void Jeu::deplaceAnimal(int id) {
     if (casesPossibles == 0) return;
     int nouvellePosInt;
     int lapins = casesPossibles - voisinesLibres.getCard();
-    if (lapins > 0) {nouvellePosInt = voisinsLapins(anciennePos).getT(rand() % lapins);}
-    else {nouvellePosInt = voisinesLibres.getT(rand() % voisinesLibres.getCard());}
+    if (lapins > 0) {
+        nouvellePosInt = voisinsLapins(anciennePos).getT(rand() % lapins);
+    }
+    else {
+        nouvellePosInt = voisinesLibres.getT(rand() % voisinesLibres.getCard());
+    }
     Coord nouvelleCoord{nouvellePosInt};
     pop.modifier(id, nouvelleCoord);
-    if (lapins > 0) {pop.supprime(g.getCase(nouvelleCoord));}
+    if (lapins > 0) {
+        pop.supprime(g.getCase(nouvelleCoord));
+        pop.animalMange(id);
+    }
+    else if (a.getEspece() == Espece::renard) {pop.animalJeune(id);}
     g.videCase(anciennePos);
     g.setCase(id, nouvelleCoord);
 }
@@ -209,13 +217,60 @@ TEST_CASE("Test de deplaceAnimal avec un animal au hasard") {
     CHECK(jeu.verifieGrille());
 }
 
+bool Jeu::seReproduit(int id) const {
+    Animal ani = pop.get(id);
+
+    if (ani.getEspece() == Espece::renard) {
+		if (ani.getFood() > FoodReprod) {
+			double r = rand() % 100;
+			r = r/100;
+			if (r < ProBirthRenard) {
+				return true;
+			}
+		}
+	}
+
+    else {
+		Coord c = ani.getCoord();
+		Ensemble ev = voisinsVides(c);
+		if (ev.getCard() >= MinFreeBirthLapin) {
+			double r = rand() % 100;
+			r = r/100;
+			if (r < ProBirthLapin) {
+				return true;
+			}
+		}
+	}
+    return false;
+}
+
 void Jeu::simulerIteration() {
-    for (int id: pop.getIds()) {
-        if (pop.get(id).getEspece() == Espece::lapin) {deplaceAnimal(id);}
-    }
-    for (int id: pop.getIds()) {
-        if (pop.get(id).getEspece() == Espece::renard) {
+    Coord spawn{0};
+    Animal ani{-1, Espece::lapin, Coord{0}};
+    bool reprod;
+    vector<int> ids = pop.getIds();
+    for (int id: ids) {
+        ani = pop.get(id);
+        reprod = false;
+        if (ani.getEspece() == Espece::lapin) {
+            spawn = ani.getCoord();
+            if (seReproduit(id)) {reprod = true;}
             deplaceAnimal(id);
+            if (reprod) {ajouteAnimal(Espece::lapin, spawn);}
+        }
+    }
+    for (int id: ids) {
+        ani = pop.get(id);
+        if (ani.getEspece() == Espece::renard) {
+            spawn = ani.getCoord();
+            deplaceAnimal(id);
+            if (seReproduit(id)) {ajouteAnimal(Espece::renard, spawn);}
+            
+            ani = pop.get(id);
+            if (ani.meurt()) {
+                g.videCase(ani.getCoord());
+                pop.supprime(id);
+            }
         }
     }
 }

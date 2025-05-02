@@ -24,6 +24,7 @@ struct Jeu {
 		Ensemble voisinsLapins(Coord c) const;
 		Ensemble voisinsRenards(Coord c) const;
 		void deplaceAnimal(int id);
+		bool seReproduit(int id) const;
 		void simulerIteration();
 };
 
