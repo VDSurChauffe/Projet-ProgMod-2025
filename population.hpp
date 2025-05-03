@@ -15,12 +15,13 @@ struct Population {
 		Population();
 		Animal get(int id) const;
 		vector<int> getIds() const;
-		void animalMange(int id);
-		void animalJeune(int id);
 		int reserve();
 		int set(Espece espece, Coord c);
 		void supprime(int id);
-		void modifier(int id, Coord c);
+		// ajout pour actualiser un animal
+		void modifier(int id, Coord c); // ajout pour déplacer l'animal
+		void animalMange(int id);
+		void animalJeune(int id);
 		
 };
 

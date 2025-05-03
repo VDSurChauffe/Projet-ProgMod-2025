@@ -30,8 +30,9 @@ int Population::set(Espece e, Coord c) {
 	Animal a{id, e, c};
 	if (id >= p.size()) {
 		p.push_back(a);
-	}
-    p[id] = a;
+	} else {
+        p[id] = a;
+    }
 	return id;
 }
 
@@ -69,21 +70,21 @@ TEST_CASE("Population::getIds après ajout et suppression") {
     CHECK(ids[1] == 2);
 }
 
+
 vector<int> Population::getIds() const {
     vector<bool> estLibre(p.size(), false);
     for (int id : libres) {
         estLibre[id] = true;
     }
-
     vector<int> ids;
     for (int i = 0; i < p.size(); i++) {
         if (!estLibre[i]) {
             ids.push_back(i);
         }
     }
-
     return ids;
 }
+
 
 TEST_CASE("Population::getIds après ajout et suppression") {
     Population pop;
@@ -100,8 +101,11 @@ TEST_CASE("Population::getIds après ajout et suppression") {
 }
 
 void Population::supprime(int id) {
-    libres.push_back(id);
+    if (id >= 0 && id < p.size()) {
+        libres.push_back(id);
+    }
 }
+
 
 TEST_CASE("Population::reserve réutilise un id libre") {
     Population pop;

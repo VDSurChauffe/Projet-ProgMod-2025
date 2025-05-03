@@ -105,6 +105,6 @@ TEST_CASE("Animal affiche and operator<<") {
     stringstream ss;
     ss << a;
     string result = ss.str();
-    CHECK(result.find("Animal : 5") != string::npos);
+    CHECK(result.find("Animal : 5") != string::npos); // npos pour valeur non trouvée
     CHECK(result.find("renard") != string::npos);
 }

@@ -81,10 +81,10 @@ Ensemble Jeu::voisinsVides(Coord c) const {
     Ensemble res;
     Ensemble ev = c.voisines();
 
-    for (int i = 0; i < ev.getCard(); i++) {
-        Coord voisine(ev.getT(i));
-        int id = g.getCase(voisine);
-        if (id == -1) {
+    for (int i = 0; i < ev.getCard(); i++) { // parcourt de tous les voisins
+        Coord voisine(ev.getT(i)); // on récupère la coordonnée de la case
+        int id = g.getCase(voisine); // on récupère l'identifiant de l'animal dans cette case
+        if (id == -1) { // si vide ça corespond
             res.ajoute(voisine.toInt());
         }
     }
@@ -164,14 +164,14 @@ void Jeu::deplaceAnimal(int id) {
     int nouvellePosInt;
     int lapins = casesPossibles - voisinesLibres.getCard();
     if (lapins > 0) {
-        nouvellePosInt = voisinsLapins(anciennePos).getT(rand() % lapins);
+        nouvellePosInt = voisinsLapins(anciennePos).getT(rand() % lapins); // une case au hasard parmi toutes les cases voisines de lapin
     }
     else {
-        nouvellePosInt = voisinesLibres.getT(rand() % voisinesLibres.getCard());
+        nouvellePosInt = voisinesLibres.getT(rand() % voisinesLibres.getCard()); // si pas lapin alors case vide au hasard
     }
     Coord nouvelleCoord{nouvellePosInt};
     pop.modifier(id, nouvelleCoord);
-    if (lapins > 0) {
+    if (lapins > 0) { // si on a mangé un lapin on doit le supprimer
         pop.supprime(g.getCase(nouvelleCoord));
         pop.animalMange(id);
     }
@@ -245,7 +245,7 @@ bool Jeu::seReproduit(int id) const {
 }
 
 void Jeu::simulerIteration() {
-    Coord spawn{0};
+    Coord spawn{0}; // spawn ie ancienneCoord
     Animal ani{-1, Espece::lapin, Coord{0}};
     bool reprod;
     vector<int> ids = pop.getIds();

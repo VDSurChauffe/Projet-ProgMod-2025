@@ -34,8 +34,10 @@ main.o: main.cpp doctest.h coord.hpp ensemble.hpp grille.hpp
 jeu.o: jeu.cpp jeu.hpp grille.hpp animal.hpp population.hpp ensemble.hpp
 	$(COMPIL) jeu.cpp
 
-anim: animation/img000.ppm
+anim: 
 	convert -scale 600 -delay 20 animation/img*.ppm movie.gif
 
 clean:
-	rm -f *.o $(EXEC_FILES) animation/*
+	del /Q *.o *.exe
+	if exist animation\* del /Q animation\*
+
