@@ -12,7 +12,7 @@ const int MaxFood = 10;
 const double ProBirthRenard = 0.05;
 const double ProBirthLapin = 0.30;
 const int MinFreeBirthLapin = 4;
-
+const int tempsVie = 100;
 
 
 
@@ -24,10 +24,13 @@ struct Animal {
 		Coord coord;
 		Espece espece;
 		int food;
+		int tVie;
 		
 	public:
 		Animal(int id, Espece espece, Coord c);
+		Animal(int id, Espece espece, Coord c, int tVie);
 		int getId() const;
+		int gettVie() const;
 		Coord getCoord() const;
 		void setCoord(Coord c);
 		Espece getEspece() const;
@@ -36,6 +39,7 @@ struct Animal {
 		bool meurt() const;
 		void mange();
 		void jeune();
+		void vieillir(int n);
 };
 
 ostream& operator<<(ostream &out, const Animal animal);

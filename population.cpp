@@ -28,7 +28,7 @@ int Population::reserve() {
 int Population::set(Espece e, Coord c) {
 	int id = reserve();
 	Animal a{id, e, c};
-	if (id >= p.size()) {
+	if (id >= int(p.size())) {
 		p.push_back(a);
 	} else {
         p[id] = a;
@@ -38,7 +38,7 @@ int Population::set(Espece e, Coord c) {
 
 
 Animal Population::get(int id) const {
-    if (id >= 0 && id < p.size()) {
+    if (id >= 0 && id < int(p.size())) {
         return p[id];
     } else {
         throw out_of_range("Identifiant invalide");
@@ -77,7 +77,7 @@ vector<int> Population::getIds() const {
         estLibre[id] = true;
     }
     vector<int> ids;
-    for (int i = 0; i < p.size(); i++) {
+    for (int i = 0; i < int(p.size()); i++) {
         if (!estLibre[i]) {
             ids.push_back(i);
         }
@@ -101,7 +101,7 @@ TEST_CASE("Population::getIds après ajout et suppression") {
 }
 
 void Population::supprime(int id) {
-    if (id >= 0 && id < p.size()) {
+    if (id >= 0 && id < int(p.size())) {
         libres.push_back(id);
     }
 }
@@ -119,7 +119,7 @@ TEST_CASE("Population::reserve réutilise un id libre") {
 }
 
 void Population::modifier(int id, Coord c) {
-    if (id >= 0 && id < p.size()) {
+    if (id >= 0 && id < int(p.size())) {
         p[id].setCoord(c); 
     } else {
         throw out_of_range("Identifiant invalide pour modification");
@@ -132,4 +132,8 @@ void Population::animalMange(int id) {
 
 void Population::animalJeune(int id) {
     p[id].jeune();
+}
+
+void Population::animalVieillit(int id, int n) {
+    p[id].vieillir(n);
 }

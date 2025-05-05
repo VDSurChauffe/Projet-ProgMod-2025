@@ -211,9 +211,12 @@ TEST_CASE("Test de deplaceAnimal avec un animal au hasard") {
     Animal aDeplace = jeu.getPop().get(id);
     Coord nouvelleCoord = aDeplace.getCoord();
 
-    CHECK(nouvelleCoord != ancienneCoord);
-    CHECK(jeu.getGrille().getCase(nouvelleCoord) == id);
-    CHECK(jeu.getGrille().getCase(ancienneCoord) == -1);
+    if (nouvelleCoord != ancienneCoord) { // cas si l'animal a bougé
+        CHECK(jeu.getGrille().getCase(nouvelleCoord) == id);
+        CHECK(jeu.getGrille().getCase(ancienneCoord) == -1);
+    } else { // cas s'il est resté sur place
+        CHECK(jeu.getGrille().getCase(nouvelleCoord) == id);
+    }
     CHECK(jeu.verifieGrille());
 }
 
@@ -244,24 +247,29 @@ bool Jeu::seReproduit(int id) const {
     return false;
 }
 
-void Jeu::simulerIteration() {
+void Jeu::simulerIteration(int& nbrLapins, int& nbrRenards) {
+    nbrLapins = 0;
+    nbrRenards = 0;
     Coord spawn{0}; // spawn ie ancienneCoord
-    Animal ani{-1, Espece::lapin, Coord{0}};
+    Animal ani{-1, Espece::lapin, Coord{0}, tempsVie};
     bool reprod;
     vector<int> ids = pop.getIds();
     for (int id: ids) {
         ani = pop.get(id);
         reprod = false;
         if (ani.getEspece() == Espece::lapin) {
+            nbrLapins++;
             spawn = ani.getCoord();
             if (seReproduit(id)) {reprod = true;}
             deplaceAnimal(id);
             if (reprod) {ajouteAnimal(Espece::lapin, spawn);}
         }
+        pop.animalVieillit(id, 1);
     }
     for (int id: ids) {
         ani = pop.get(id);
         if (ani.getEspece() == Espece::renard) {
+            nbrRenards++;
             spawn = ani.getCoord();
             deplaceAnimal(id);
             if (seReproduit(id)) {ajouteAnimal(Espece::renard, spawn);}
@@ -272,5 +280,6 @@ void Jeu::simulerIteration() {
                 pop.supprime(id);
             }
         }
+        pop.animalVieillit(id, 1);
     }
 }

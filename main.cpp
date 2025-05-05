@@ -13,16 +13,26 @@
 #include "population.hpp"
 #include "jeu.hpp"
 #include "image.hpp"
+#include "stats.hpp"
 using namespace std;
 
 const double ProbLapinDefaut = 0.20;
 const double ProbRenardDefaut = 0.07;
 
+const int nbrTours = 100;
+
 int main() {
+	int lapins = 0;
+	int renards = 0;
+    vector<int> nbLapins(nbrTours);
+    vector<int> nbRenards(nbrTours);
 	Jeu monde{ProbLapinDefaut, ProbRenardDefaut};
-	for (int i = 0; i < 100; i++) {
-		monde.simulerIteration();
+	for (int i = 0; i < nbrTours; i++) {
+		monde.simulerIteration(lapins, renards);
+		nbLapins[i] = lapins;
+        nbRenards[i] = renards;
 		cree_image(monde, i);
 	}
+    sauvegarderStatsCSV(nbLapins, nbRenards, nbrTours);
 	return 0;
 }
