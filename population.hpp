@@ -22,7 +22,7 @@ struct Population {
 		void modifier(int id, Coord c); // ajout pour déplacer l'animal
 		void animalMange(int id);
 		void animalJeune(int id);
-		void animalVieillit(int id, int n);
+		void animalVieillit(int id);
 		
 };
 

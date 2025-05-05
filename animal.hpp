@@ -39,7 +39,7 @@ struct Animal {
 		bool meurt() const;
 		void mange();
 		void jeune();
-		void vieillir(int n);
+		void vieillir();
 };
 
 ostream& operator<<(ostream &out, const Animal animal);

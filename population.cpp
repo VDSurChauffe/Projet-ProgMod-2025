@@ -134,6 +134,6 @@ void Population::animalJeune(int id) {
     p[id].jeune();
 }
 
-void Population::animalVieillit(int id, int n) {
-    p[id].vieillir(n);
+void Population::animalVieillit(int id) {
+    p[id].vieillir();
 }

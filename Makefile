@@ -34,8 +34,8 @@ main.o: main.cpp doctest.h coord.hpp ensemble.hpp grille.hpp
 jeu.o: jeu.cpp jeu.hpp grille.hpp animal.hpp population.hpp ensemble.hpp
 	$(COMPIL) jeu.cpp
 
-stat.o: stats.hpp stats.cpp
-	g++ -c stats.cpp
+stats.o: stats.hpp stats.cpp
+	$(COMPIL) stats.cpp
 
 anim: 
 	convert -scale 600 -delay 20 animation/img*.ppm movie.gif
@@ -49,9 +49,14 @@ graph:
 init:
 	mkdir animation statistiques
 
-clean:
-	rm -f *.o $(EXEC_FILES) animation/*
+clean_exec:
+	rm -f *.o $(EXEC_FILES)
 
 clean_anim:
 	rm -f animation/*.ppm movie.gif
 
+clean_stats:
+	rm -f statistiques/evolution.csv
+
+clean_all:
+	make clean_exec; make clean_anim; make clean_stats

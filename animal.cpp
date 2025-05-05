@@ -8,11 +8,11 @@ using namespace std;
 
 Animal::Animal(int id, Espece espece, Coord c, int tVie) : id {id}, coord{c}, espece{espece}, food{FoodInit}, tVie{tVie} {}
 
-void Animal::vieillir(int n) {
-	tVie -= n;
+void Animal::vieillir() {
+	tVie -= rand() % 2;
 }
 
-Animal::Animal(int id, Espece espece, Coord c) : id {id}, coord{c}, espece{espece}, food{FoodInit}, tVie{tempsVie} {}
+Animal::Animal(int id, Espece espece, Coord c) : id {id}, coord{c}, espece{espece}, food{FoodInit}, tVie{tempsVie/2} {}
 
 int Animal::getId() const {
 	return id;

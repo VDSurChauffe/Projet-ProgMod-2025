@@ -176,7 +176,7 @@ void Jeu::deplaceAnimal(int id) {
         pop.animalMange(id);
     }
     else if (a.getEspece() == Espece::renard) {pop.animalJeune(id);}
-    pop.animalVieillit(id, 1);
+    pop.animalVieillit(id);
     g.videCase(anciennePos);
     g.setCase(id, nouvelleCoord);
 }
