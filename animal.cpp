@@ -58,7 +58,7 @@ TEST_CASE("Animal setCoord") {
 }
 
 bool Animal::meurt() const {
-	return food == 0 || tVie <= 0;
+	return food == 0 or tVie <= 0;
 }
 
 TEST_CASE("Animal meurt") {

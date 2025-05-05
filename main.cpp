@@ -4,6 +4,7 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <ctime>
 
 #include "doctest.h"
 #include "coord.hpp"
@@ -19,9 +20,11 @@ using namespace std;
 const double ProbLapinDefaut = 0.20;
 const double ProbRenardDefaut = 0.07;
 
-const int nbrTours = 100;
+const int nbrTours = 200;
 
 int main() {
+	srand(time(NULL));
+
 	int lapins = 0;
 	int renards = 0;
     vector<int> nbLapins(nbrTours);

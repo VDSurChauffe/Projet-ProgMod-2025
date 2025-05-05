@@ -176,6 +176,7 @@ void Jeu::deplaceAnimal(int id) {
         pop.animalMange(id);
     }
     else if (a.getEspece() == Espece::renard) {pop.animalJeune(id);}
+    pop.animalVieillit(id, 1);
     g.videCase(anciennePos);
     g.setCase(id, nouvelleCoord);
 }
@@ -263,8 +264,12 @@ void Jeu::simulerIteration(int& nbrLapins, int& nbrRenards) {
             if (seReproduit(id)) {reprod = true;}
             deplaceAnimal(id);
             if (reprod) {ajouteAnimal(Espece::lapin, spawn);}
+            ani = pop.get(id);
+            if (ani.meurt()) {
+                g.videCase(ani.getCoord());
+                pop.supprime(id);
+            }
         }
-        pop.animalVieillit(id, 1);
     }
     for (int id: ids) {
         ani = pop.get(id);
@@ -280,6 +285,5 @@ void Jeu::simulerIteration(int& nbrLapins, int& nbrRenards) {
                 pop.supprime(id);
             }
         }
-        pop.animalVieillit(id, 1);
     }
 }

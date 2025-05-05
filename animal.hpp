@@ -12,7 +12,7 @@ const int MaxFood = 10;
 const double ProBirthRenard = 0.05;
 const double ProBirthLapin = 0.30;
 const int MinFreeBirthLapin = 4;
-const int tempsVie = 100;
+const int tempsVie = 40;
 
 
 

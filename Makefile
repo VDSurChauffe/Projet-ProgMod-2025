@@ -34,15 +34,20 @@ main.o: main.cpp doctest.h coord.hpp ensemble.hpp grille.hpp
 jeu.o: jeu.cpp jeu.hpp grille.hpp animal.hpp population.hpp ensemble.hpp
 	$(COMPIL) jeu.cpp
 
+stat.o: stats.hpp stats.cpp
+	g++ -c stats.cpp
+
 anim: 
 	convert -scale 600 -delay 20 animation/img*.ppm movie.gif
 
 anim2:
 	magick convert -scale 600 -delay 20 animation/img*.ppm movie.gif
 
-stat.o: stats.hpp stats.cpp
-	g++ -c stats.cpp
+graph:
+	python3 graphique.py
 
+init:
+	mkdir animation statistiques
 
 clean:
 	rm -f *.o $(EXEC_FILES) animation/*
