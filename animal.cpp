@@ -9,10 +9,10 @@ using namespace std;
 Animal::Animal(int id, Espece espece, Coord c, int tVie) : id {id}, coord{c}, espece{espece}, food{FoodInit}, tVie{tVie} {}
 
 void Animal::vieillir() {
-	tVie -= rand() % 2;
+	tVie -= rand() % 2; // 0 ou 1
 }
 
-Animal::Animal(int id, Espece espece, Coord c) : id {id}, coord{c}, espece{espece}, food{FoodInit}, tVie{tempsVie/2} {}
+Animal::Animal(int id, Espece espece, Coord c) : id {id}, coord{c}, espece{espece}, food{FoodInit}, tVie{tempsVie/2} {} //tempsVie/2 car on vieillit de 0 ou 1 donc une fois sur 2 ce qui double l'espérance de vie théorique
 
 int Animal::getId() const {
 	return id;

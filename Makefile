@@ -49,6 +49,9 @@ graph:
 init:
 	mkdir animation statistiques
 
+clean_w:
+	del /f *.o $(EXEC_FILES)
+	
 clean_exec:
 	rm -f *.o $(EXEC_FILES)
 

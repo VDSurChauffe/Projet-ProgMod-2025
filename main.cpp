@@ -23,7 +23,7 @@ const double ProbRenardDefaut = 0.07;
 const int nbrTours = 200;
 
 int main() {
-	srand(time(NULL));
+	srand(time(NULL)); // time(NULL) donne nbr secodnes depuis une date (donc c'est l'heure actuelle) et srand initialise la seed de rand()
 
 	int lapins = 0;
 	int renards = 0;

@@ -17,4 +17,5 @@ plt.ylabel('Nombre d\'animaux')
 plt.legend()
 
 plt.grid(True)
-plt.show()
+
+plt.savefig('statistiques/graph.png')
