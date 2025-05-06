@@ -1,3 +1,4 @@
+// -*- coding: utf-8 -*-
 #include <iostream>
 #include "doctest.h"
 #include "coord.hpp"

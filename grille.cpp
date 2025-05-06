@@ -1,3 +1,4 @@
+// -*- coding: utf-8 -*-
 #include <iostream>
 #include "doctest.h"
 #include "coord.hpp"
@@ -75,5 +76,5 @@ TEST_CASE("Autres tests : caseVide getCase videCase setCase" ) {
 	CHECK(g.getCase(c) == 1);
 	g.videCase(c);
 	CHECK(g.caseVide(c));
-	
+
 }

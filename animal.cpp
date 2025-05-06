@@ -1,3 +1,4 @@
+// -*- coding: utf-8 -*-
 #include <iostream>
 #include <sstream>
 #include "doctest.h"
@@ -25,13 +26,6 @@ Animal::Animal(int id, Espece espece, Coord c) : id {id}, coord{c}, espece{espec
 
 int Animal::getId() const {
 	return id;
-}
-
-TEST_CASE("getId") {
-	cout<< Coord{20,20} << endl;
-	cout<< Coord{12,5} << endl;
-	cout<< Coord{34,0} << endl;
-	cout<< Coord{0,39} << endl;
 }
 
 Coord Animal::getCoord() const {
@@ -100,7 +94,7 @@ TEST_CASE("Animal jeune diminue food") {
 }
 
 void Animal::affiche(ostream& out) const {
-	out << "Animal : " << id << endl;
+	out << "Identifiant : " << id << endl;
 	out << "Coord : " << coord << endl;
 	out << "Espèce : ";
 	switch (getEspece()) {
@@ -140,6 +134,6 @@ TEST_CASE("Affichage d'un animal avec operator<<") {
 
 TEST_CASE("Affichage d'un animal") {
     Animal a(5, Espece::renard, Coord(1, 1));
-    std::cout << "Affichage de l'animal :" << std::endl;
-    std::cout << a << std::endl;
+    std::cout << "Affichage de l'animal :" << endl;
+    std::cout << a << endl;
 }
