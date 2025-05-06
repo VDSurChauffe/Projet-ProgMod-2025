@@ -21,7 +21,7 @@ bool Ensemble::estVide() const {
 }
 
 TEST_CASE("estVide") {
-	Ensemble e = Ensemble{};
+	Ensemble e;
 	CHECK(e.cardinal() == 0);
 }
 
@@ -71,6 +71,16 @@ int Ensemble::getT(int i) const {
 	return t[i];
 }
 
+TEST_CASE("getT") {
+    Ensemble e;
+    e.ajoute(7);
+    e.ajoute(14);
+    e.ajoute(21);
+    CHECK(e.getT(0) == 7);
+    CHECK(e.getT(1) == 14);
+    CHECK(e.getT(2) == 21);
+}
+
 int Ensemble::getCard() const {
 	return card;
 }
@@ -85,7 +95,18 @@ bool Ensemble::contient(int o) const {
 	return false;
 }
 
-
+TEST_CASE("contient") {
+    Ensemble v;
+    v.ajoute(99);
+    v.ajoute(42);
+    CHECK(v.contient(99));
+    CHECK(v.contient(42));
+    Ensemble e;
+    e.ajoute(5);
+    e.ajoute(10);
+    CHECK_FALSE(e.contient(999));
+    CHECK_FALSE(e.contient(0));
+}
 
 
 

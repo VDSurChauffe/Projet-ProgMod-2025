@@ -41,7 +41,7 @@ TEST_CASE("affichage coord") {
 	cout<< Coord{20,20} << endl;
 	cout<< Coord{12,5} << endl;
 	cout<< Coord{34,0} << endl;
-	cout<< Coord{0,39} << endl;
+	cout<< Coord{0,39} << endl << endl;
 }
 
 bool operator==(Coord c1, Coord c2) {

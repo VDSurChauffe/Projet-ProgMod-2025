@@ -8,6 +8,17 @@ using namespace std;
 
 Jeu::Jeu() : g{}, pop{} {}
 
+TEST_CASE("Constructeur par défaut") {
+    Jeu jeu;
+    Grille g = jeu.getGrille();
+    for (int i = 0; i < TAILLEGRILLE; ++i) {
+        for (int j = 0; j < TAILLEGRILLE; ++j) {
+            Coord c(i, j);
+            CHECK(g.getCase(c) == -1);
+        }
+    }
+}
+
 Population Jeu::getPop() const {
 	return pop;
 }
@@ -16,7 +27,7 @@ Grille Jeu::getGrille() const {
 	return g;
 }
 
-TEST_CASE("Test de getPop()") {
+TEST_CASE("getPop") {
     Jeu jeu(0.3, 0.3);
     Population pop = jeu.getPop();
     CHECK(pop.getIds().size() > 0);
@@ -27,7 +38,7 @@ void Jeu::ajouteAnimal(Espece e, Coord c) {
 	g.setCase(id, c);
 }
 
-TEST_CASE("Test de ajouteAnimal()") {
+TEST_CASE("ajouteAnimal") {
     Coord c{5, 5};
 	Jeu jeu;
     jeu.ajouteAnimal(Espece::lapin, c);
@@ -57,6 +68,17 @@ Jeu::Jeu(double probLapins, double probRenard) : g{}, pop{} {
 	}
 }
 
+TEST_CASE("Constructeur probabilités") {
+    Jeu jeu( 0.20, 0.07);
+    Population p = jeu.getPop();
+    auto ids = p.getIds();
+    for (int id : ids) {
+        Animal a = p.get(id);
+        Coord c = a.getCoord();
+        CHECK(jeu.getGrille().getCase(c) == id);
+    }
+}
+
 bool Jeu::verifieGrille() const {
 	for (int i = 0; i < TAILLEGRILLE; i++) {
 		for (int j = 0; j < TAILLEGRILLE; j++) {
@@ -72,7 +94,7 @@ bool Jeu::verifieGrille() const {
 }
 
 
-TEST_CASE("Test de verifieGrille()") {
+TEST_CASE("verifieGrille") {
     Jeu jeu(0.3, 0.2);
     CHECK(jeu.verifieGrille());
 }
@@ -91,7 +113,7 @@ Ensemble Jeu::voisinsVides(Coord c) const {
     return res;
 }
 
-TEST_CASE("Test de voisinsVides") {
+TEST_CASE("voisinsVides") {
     Jeu jeu;
     Coord c{5, 5};
     jeu.ajouteAnimal(Espece::lapin, c);
@@ -138,7 +160,7 @@ Ensemble Jeu::voisinsRenards(Coord c) const {
 	return res;
 }
 
-TEST_CASE("Test de voisinsLapins et voisinsRenards") {
+TEST_CASE("voisinsLapins et voisinsRenards") {
     Jeu jeu;
     jeu.ajouteAnimal(Espece::lapin, Coord{5, 4});
     jeu.ajouteAnimal(Espece::lapin, Coord{4, 5});
@@ -181,7 +203,7 @@ void Jeu::deplaceAnimal(int id) {
     g.setCase(id, nouvelleCoord);
 }
 
-TEST_CASE("Test de deplaceAnimal avec un animal au hasard") {
+TEST_CASE("deplaceAnimal avec un animal au hasard") {
     Jeu jeu(0.3, 0.3);  // Initialise une grille avec des animaux
 
     bool animalTrouve = false;

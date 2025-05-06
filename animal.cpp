@@ -12,6 +12,15 @@ void Animal::vieillir() {
 	tVie -= rand() % 2; // 0 ou 1
 }
 
+TEST_CASE("vieillir diminue tVie de 0 ou 1") {
+    Coord c(1, 2);
+    Animal a(2, Espece::renard, c, 10);
+    int t0 = a.gettVie();
+    a.vieillir();
+    int t1 = a.gettVie();
+    CHECK((t1 == t0 || t1 == t0 - 1));
+}
+
 Animal::Animal(int id, Espece espece, Coord c) : id {id}, coord{c}, espece{espece}, food{FoodInit}, tVie{tempsVie/2} {} //tempsVie/2 car on vieillit de 0 ou 1 donc une fois sur 2 ce qui double l'espérance de vie théorique
 
 int Animal::getId() const {

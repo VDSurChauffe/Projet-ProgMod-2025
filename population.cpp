@@ -45,7 +45,8 @@ Animal Population::get(int id) const {
     }
 }
 
-TEST_CASE("Population::set, reserve et get") {
+
+TEST_CASE("set, reserve et get") {
     Population pop;
     pop.set(Espece::lapin, Coord(1, 2));
     Animal recupere = pop.get(0);
@@ -53,21 +54,6 @@ TEST_CASE("Population::set, reserve et get") {
     CHECK(recupere.getEspece() == Espece::lapin);
     CHECK(recupere.getCoord().getX() == 1);
     CHECK(recupere.getCoord().getY() == 2);
-}
-
-
-TEST_CASE("Population::getIds après ajout et suppression") {
-    Population pop;
-    pop.set(Espece::lapin, Coord(0, 1));
-    pop.set(Espece::lapin, Coord(1, 2));
-    pop.set(Espece::lapin, Coord(2, 3));
-
-    pop.supprime(1);
-
-    vector<int> ids = pop.getIds();
-    CHECK(ids.size() == 2);
-    CHECK(ids[0] == 0);
-    CHECK(ids[1] == 2);
 }
 
 
@@ -86,7 +72,7 @@ vector<int> Population::getIds() const {
 }
 
 
-TEST_CASE("Population::getIds après ajout et suppression") {
+TEST_CASE("getIds après ajout et suppression") {
     Population pop;
     pop.set(Espece::lapin, Coord(0, 1));
     pop.set(Espece::lapin, Coord(1, 2));
@@ -107,7 +93,7 @@ void Population::supprime(int id) {
 }
 
 
-TEST_CASE("Population::reserve réutilise un id libre") {
+TEST_CASE("reserve réutilise un id libre") {
     Population pop;
     pop.set(Espece::renard, Coord(0, 0));
     pop.set(Espece::lapin, Coord(1, 1));
@@ -130,10 +116,47 @@ void Population::animalMange(int id) {
     p[id].mange();
 }
 
+
 void Population::animalJeune(int id) {
     p[id].jeune();
 }
 
 void Population::animalVieillit(int id) {
     p[id].vieillir();
+}
+
+TEST_CASE("animalMange et animalJeune") {
+    Population pop;
+    int id = pop.set(Espece::renard, Coord(3, 3));
+    Animal a = pop.get(id);
+    int foodAvant = a.getFood();
+    pop.animalJeune(id);
+    int foodApres = pop.get(id).getFood();
+    CHECK(foodApres == foodAvant - 1);
+    foodAvant = pop.get(id).getFood();
+    pop.animalMange(id);
+    foodApres = pop.get(id).getFood();
+    CHECK(foodApres == foodAvant + FoodLapin - 1);
+}
+
+TEST_CASE("AnimalVieillit") {
+    Population pop;
+    int id = pop.set(Espece::renard, Coord(3, 3));
+    Animal a = pop.get(id);
+    int vieAvant = a.gettVie();
+    int vieApres = pop.get(id).gettVie();
+    bool b1 = vieApres == vieAvant - 1;
+    bool b2 = vieApres == vieAvant;
+    bool b3 = b1 || b2;
+    CHECK(b3);
+
+    int id2 = pop.set(Espece::lapin, Coord(10, 3));
+    Animal a2 = pop.get(id2);
+    int vieAvant2 = a2.gettVie();
+    pop.animalVieillit(id2);
+    int vieApres2 = pop.get(id2).gettVie();
+    bool c1 = vieApres2 == vieAvant2 - 1;
+    bool c2 = vieApres2 == vieAvant2;
+    bool c3 = c1 || c2;
+    CHECK(c3);
 }
