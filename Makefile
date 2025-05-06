@@ -59,7 +59,7 @@ clean_anim:
 	rm -f animation/*.ppm movie.gif
 
 clean_stats:
-	rm -f statistiques/evolution.csv
+	rm -f statistiques/*
 
 clean_all:
 	make clean_exec; make clean_anim; make clean_stats
